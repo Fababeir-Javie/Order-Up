@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ORDER UP! — Restaurant Rush</title>
+    <meta
+      name="description"
+      content="Play ORDER UP! — Restaurant Rush: read customer tickets, tap the matching diner items, and serve orders before the shift timer runs out."
+    />
+    <meta property="og:title" content="ORDER UP! — Restaurant Rush" />
+    <meta
+      property="og:description"
+      content="A fast-paced browser diner game built with pure HTML, CSS, and JavaScript."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./script.js"></script>
+  </head>
+  <body>
+    <div id="app-shell" class="app-shell">
+      <button
+        id="mute-btn"
+        class="mute-toggle"
+        type="button"
+        aria-label="Toggle sound effects"
+        aria-pressed="false"
+        title="Toggle Sound (M)"
+      >
+        <svg class="icon-sound-on" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M11 5L6 9H2v6h4l5 4V5z" />
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        </svg>
+        <svg class="icon-sound-off" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M11 5L6 9H2v6h4l5 4V5z" />
+          <line x1="23" y1="9" x2="17" y2="15" />
+          <line x1="17" y1="9" x2="23" y2="15" />
+        </svg>
+        <span id="mute-label">Sound On</span>
+      </button>
+
+      <section id="start-screen" class="screen is-active" aria-labelledby="game-title">
+        <div class="diner-card start-panel">
+          <div class="diner-awning" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+
+          <div class="start-content">
+            <div class="marquee-wrap">
+              <svg class="marquee-svg" viewBox="0 0 420 120" role="img" aria-label="Order Up Restaurant Rush Diner Sign">
+                <rect x="8" y="10" width="404" height="100" rx="18" fill="#4A2511" stroke="#D97706" stroke-width="4" />
+                <rect x="18" y="20" width="384" height="80" rx="12" fill="#FFF8EC" />
+                <circle cx="34" cy="34" r="4" fill="#EA580C" />
+                <circle cx="386" cy="34" r="4" fill="#EA580C" />
+                <circle cx="34" cy="86" r="4" fill="#EA580C" />
+                <circle cx="386" cy="86" r="4" fill="#EA580C" />
+                <text x="210" y="64" text-anchor="middle" class="svg-title-main">ORDER UP!</text>
+                <text x="210" y="88" text-anchor="middle" class="svg-title-sub">RESTAURANT RUSH</text>
+              </svg>
+            </div>
+
+            <h1 id="game-title" class="sr-only">ORDER UP! Restaurant Rush</h1>
+
+            <p class="start-tagline">
+              Step behind the diner counter. Match each customer's ticket before the shift clock hits zero.
+            </p>
+
+            <div class="start-menu-preview" aria-hidden="true">
+              <div class="preview-plate">
+                <svg viewBox="0 0 64 64">
+                  <path d="M12 28 C12 14, 52 14, 52 28 Z" fill="#E69B45" />
+                  <circle cx="24" cy="21" r="1.8" fill="#FFF3D6" />
+                  <circle cx="34" cy="19" r="1.8" fill="#FFF3D6" />
+                  <circle cx="42" cy="22" r="1.8" fill="#FFF3D6" />
+                  <path d="M10 31 Q16 28 22 31 T34 31 T46 31 T54 31" stroke="#3F9B4C" stroke-width="4" fill="none" stroke-linecap="round" />
+                  <rect x="11" y="34" width="42" height="8" rx="4" fill="#6F371E" />
+                  <polygon points="15,34 49,34 32,41" fill="#FACC15" />
+                  <rect x="12" y="44" width="40" height="8" rx="4" fill="#D9822B" />
+                </svg>
+              </div>
+              <div class="preview-plate">
+                <svg viewBox="0 0 64 64">
+                  <rect x="19" y="14" width="5" height="22" rx="2" fill="#FBBF24" />
+                  <rect x="26" y="10" width="5" height="26" rx="2" fill="#F59E0B" />
+                  <rect x="33" y="12" width="5" height="24" rx="2" fill="#FBBF24" />
+                  <rect x="40" y="15" width="5" height="21" rx="2" fill="#F59E0B" />
+                  <path d="M15 28 L49 28 L45 54 L19 54 Z" fill="#DC2626" />
+                  <circle cx="32" cy="41" r="5" fill="#FBBF24" />
+                </svg>
+              </div>
+              <div class="preview-plate">
+                <svg viewBox="0 0 64 64">
+                  <line x1="34" y1="22" x2="42" y2="8" stroke="#4A2511" stroke-width="3.5" stroke-linecap="round" />
+                  <rect x="18" y="20" width="28" height="5" rx="2" fill="#E5E7EB" />
+                  <path d="M20 25 L44 25 L41 54 L23 54 Z" fill="#DC2626" />
+                  <circle cx="32" cy="39" r="6" fill="#FFF8EC" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="best-score-callout">
+              <span class="callout-label">Best Shift Score</span>
+              <span id="best-score-start" class="callout-value tabular-nums">0</span>
+            </div>
+
+            <div class="start-actions">
+              <button id="play-btn" class="btn btn-primary btn-lg" type="button">
+                Start Shift
+              </button>
+              <button id="how-to-play-btn" class="btn btn-secondary" type="button">
+                How to Play
+              </button>
+            </div>
+
+            <p class="control-hint-line">
+              Click cards or press <strong>1–6</strong> to select · <strong>Enter</strong> to serve · <strong>Esc</strong> to pause
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="instructions-screen" class="screen" aria-labelledby="instructions-title">
+        <div class="diner-card instructions-panel">
+          <div class="panel-header">
+            <h2 id="instructions-title">How to Work the Counter</h2>
+          </div>
+
+          <div class="panel-body">
+            <ol class="rules-list">
+              <li>
+                <span class="step-num">1</span>
+                <div>
+                  <strong>Read the Customer Order</strong>
+                  <p>Each patron displays 1 to 4 requested diner items on the order ticket.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <div>
+                  <strong>Select the Matching Food</strong>
+                  <p>Click cards (or press keys <strong>1–6</strong>) to load your tray. Selection order does not matter.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <div>
+                  <strong>Press Serve Order</strong>
+                  <p>Hit <strong>Serve Order</strong> or press <strong>Enter</strong> before the customer's patience bar runs dry.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-num">4</span>
+                <div>
+                  <strong>Build Streaks &amp; Protect Hearts</strong>
+                  <p>Exact matches earn +10 pts plus streak bonuses. Wrong or expired orders cost 1 Kitchen Heart.</p>
+                </div>
+              </li>
+            </ol>
+
+            <div class="instructions-actions">
+              <button id="start-game-btn" class="btn btn-primary btn-lg" type="button">
+                Start Shift Now
+              </button>
+              <button id="back-to-start-btn" class="btn btn-secondary" type="button">
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main id="game-screen" class="screen" aria-label="Restaurant Rush Gameplay">
+        <div class="game-cabinet">
+          <header class="hud-bar" aria-label="Shift Status">
+            <div class="hud-brand">
+              <span class="hud-title">RESTAURANT RUSH</span>
+              <span id="level-display" class="hud-level">Rush Lv 1</span>
+            </div>
+
+            <div class="hud-metrics">
+              <div id="timer-box" class="hud-stat">
+                <span class="hud-label">Time</span>
+                <span id="timer-display" class="hud-value tabular-nums">01:00</span>
+              </div>
+
+              <div class="hud-stat">
+                <span class="hud-label">Score</span>
+                <span id="score-display" class="hud-value tabular-nums">000</span>
+              </div>
+
+              <div class="hud-stat">
+                <span class="hud-label">Orders</span>
+                <span id="orders-display" class="hud-value tabular-nums">0</span>
+              </div>
+
+              <div class="hud-stat">
+                <span class="hud-label">Streak</span>
+                <span id="streak-display" class="hud-value tabular-nums">x0</span>
+              </div>
+
+              <div class="hud-stat hud-health" aria-live="polite">
+                <span class="hud-label">Hearts</span>
+                <span id="health-display" class="hud-value tabular-nums">3/3</span>
+              </div>
+            </div>
+
+            <button
+              id="pause-btn"
+              class="btn btn-small btn-secondary"
+              type="button"
+              aria-label="Pause game"
+            >
+              Pause
+            </button>
+          </header>
+
+          <div id="game-arena" class="game-arena">
+            <canvas
+              id="game-canvas"
+              width="880"
+              height="220"
+              aria-label="Animated diner counter showing customers and served plates"
+            ></canvas>
+
+            <section class="order-ticket" aria-label="Current Customer Order">
+              <div class="ticket-header">
+                <span id="order-number-label" class="ticket-id">ORDER #1</span>
+                <span id="patience-text" class="ticket-patience tabular-nums">15s</span>
+              </div>
+              <div class="patience-track" aria-hidden="true">
+                <div id="patience-bar-fill" class="patience-fill"></div>
+              </div>
+              <div id="order-items-list" class="order-items-list" aria-live="polite">
+              </div>
+            </section>
+          </div>
+
+          <div id="feedback-banner" class="feedback-banner" role="status" aria-live="polite">
+            Select the matching items below and press Serve Order!
+          </div>
+
+          <section class="counter-tray" aria-label="Menu Selection">
+            <div id="menu-grid" class="menu-grid">
+            </div>
+
+            <div class="serve-controls">
+              <button id="clear-btn" class="btn btn-secondary" type="button">
+                Clear Tray (C)
+              </button>
+              <button id="serve-btn" class="btn btn-primary btn-serve" type="button">
+                Serve Order (Enter)
+              </button>
+            </div>
+
+            <p class="control-hint-line gameplay-hint">
+              Keys <strong>1–6</strong> toggle food · <strong>C</strong> clears tray · <strong>Enter</strong> serves · <strong>Esc</strong> pauses
+            </p>
+          </section>
+        </div>
+      </main>
+
+      <div
+        id="pause-modal"
+        class="modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="pause-title"
+        hidden
+      >
+        <div class="diner-card modal-card">
+          <div class="panel-header">
+            <h2 id="pause-title">Shift Paused</h2>
+          </div>
+          <div class="panel-body modal-body">
+            <p class="modal-copy">Take a breather! Your timer and current order are held safely.</p>
+            <div class="modal-actions">
+              <button id="resume-btn" class="btn btn-primary btn-lg" type="button">
+                Resume Shift
+              </button>
+              <button id="quit-btn" class="btn btn-secondary" type="button">
+                Back to Title
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="cashier-modal"
+        class="modal-overlay cashier-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cashier-title"
+        hidden
+      >
+        <div class="pos-register diner-card">
+
+          <div class="pos-register-header panel-header">
+            <h2 id="cashier-title" class="pos-register-title">
+              <span class="pos-register-icon" aria-hidden="true">🧾</span>
+              Cashier Register
+            </h2>
+            <div class="pos-register-subrow">
+              <span class="pos-register-subtitle" id="pos-payment-type-label">Cash Payment</span>
+              <span id="pos-idle-timer" class="pos-idle-timer tabular-nums" aria-live="polite">⏱️ Leaves in 15s</span>
+            </div>
+          </div>
+
+          <div class="pos-register-body">
+
+            <div class="pos-left-col">
+
+              <div class="receipt-paper" aria-label="Order receipt">
+                <div class="receipt-header-label">— ORDER RECEIPT —</div>
+                <ul id="pos-receipt-items" class="receipt-items-list" aria-live="polite">
+                </ul>
+                <div class="receipt-divider" aria-hidden="true">- - - - - - - - - - - -</div>
+                <div class="receipt-total-row">
+                  <span class="receipt-total-label">TOTAL DUE</span>
+                  <span id="pos-total-due" class="receipt-total-amount tabular-nums">₱0.00</span>
+                </div>
+              </div>
+
+              <div class="pos-display" aria-label="Register display">
+                <div class="pos-display-row">
+                  <span class="pos-display-label">CASH RECEIVED</span>
+                  <span id="pos-cash-received" class="pos-display-value tabular-nums">₱0.00</span>
+                </div>
+                <div class="pos-display-row">
+                  <span class="pos-display-label">TOTAL DUE</span>
+                  <span id="pos-display-total" class="pos-display-value tabular-nums">₱0.00</span>
+                </div>
+                <div class="pos-display-row pos-display-row--correct">
+                  <span class="pos-display-label">TOTAL CHANGE</span>
+                  <span id="pos-correct-change" class="pos-display-value pos-display-correct tabular-nums">₱0.00</span>
+                </div>
+                <div class="pos-display-row pos-display-row--change">
+                  <span class="pos-display-label">CHANGE GIVEN</span>
+                  <span id="pos-change-selected" class="pos-display-value pos-display-change tabular-nums">₱0.00</span>
+                </div>
+              </div>
+
+              <div
+                id="pos-feedback"
+                class="pos-feedback"
+                role="status"
+                aria-live="polite"
+              >
+                Select bills and coins to give the correct change.
+              </div>
+
+            </div>
+
+            <div class="pos-right-col">
+
+              <div class="pos-payment-toggle" role="group" aria-label="Payment method">
+                <button
+                  id="pos-toggle-cash"
+                  class="btn btn-payment-type is-active-payment"
+                  type="button"
+                  aria-pressed="true"
+                >
+                  💵 Cash
+                </button>
+              </div>
+
+              <div id="pos-cash-panel" class="pos-denomination-panel">
+
+                <p class="pos-denom-section-label">Bills — click to add to change</p>
+                <div class="pos-bills-grid" role="group" aria-label="Bill denominations">
+                  <button class="btn pos-denom-btn pos-bill-btn" type="button" data-denom="1000" aria-label="Add ₱1000 bill to change">₱1,000</button>
+                  <button class="btn pos-denom-btn pos-bill-btn" type="button" data-denom="500"  aria-label="Add ₱500 bill to change">₱500</button>
+                  <button class="btn pos-denom-btn pos-bill-btn" type="button" data-denom="200"  aria-label="Add ₱200 bill to change">₱200</button>
+                  <button class="btn pos-denom-btn pos-bill-btn" type="button" data-denom="100"  aria-label="Add ₱100 bill to change">₱100</button>
+                  <button class="btn pos-denom-btn pos-bill-btn" type="button" data-denom="50"   aria-label="Add ₱50 bill to change">₱50</button>
+                  <button class="btn pos-denom-btn pos-bill-btn" type="button" data-denom="20"   aria-label="Add ₱20 bill to change">₱20</button>
+                </div>
+
+                <p class="pos-denom-section-label">Coins — click to add to change</p>
+                <div class="pos-coins-grid" role="group" aria-label="Coin denominations">
+                  <button class="btn pos-denom-btn pos-coin-btn" type="button" data-denom="10"   aria-label="Add ₱10 coin to change">₱10</button>
+                  <button class="btn pos-denom-btn pos-coin-btn" type="button" data-denom="5"    aria-label="Add ₱5 coin to change">₱5</button>
+                  <button class="btn pos-denom-btn pos-coin-btn" type="button" data-denom="1"    aria-label="Add ₱1 coin to change">₱1</button>
+                  <button class="btn pos-denom-btn pos-coin-btn" type="button" data-denom="0.25" aria-label="Add ₱0.25 coin to change">₱0.25</button>
+                </div>
+
+                <button id="pos-clear-change-btn" class="btn btn-secondary pos-clear-change-btn" type="button">
+                  ↩ Clear / Reset Change
+                </button>
+
+              </div>
+
+              <div class="pos-actions">
+                <button
+                  id="pos-complete-btn"
+                  class="btn btn-primary btn-lg pos-complete-btn"
+                  type="button"
+                >
+                   Complete Transaction
+                </button>
+                <button
+                  id="pos-skip-btn"
+                  class="btn btn-secondary"
+                  type="button"
+                  title="Skip cashier (no tip)"
+                >
+                  Skip (No Tip)
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section id="game-over-screen" class="screen" aria-labelledby="game-over-title">
+        <div class="diner-card game-over-panel">
+          <div class="panel-header">
+            <h2 id="game-over-title">Shift Complete!</h2>
+          </div>
+
+          <div class="panel-body game-over-body">
+            <p id="game-over-reason" class="game-over-reason">
+              Shift complete! Here is your final score.
+            </p>
+
+            <div id="high-score-badge" class="new-record-banner" hidden>
+              New Diner Record!
+            </div>
+
+            <div class="final-score-block">
+              <span class="final-label">Your Score</span>
+              <span id="final-score-display" class="final-value tabular-nums">0</span>
+            </div>
+
+            <div class="summary-row">
+              <div class="summary-stat">
+                <span class="summary-label">Orders Served</span>
+                <span id="final-orders-display" class="summary-num tabular-nums">0</span>
+              </div>
+              <div class="summary-stat">
+                <span class="summary-label">Best Score</span>
+                <span id="high-score-display" class="summary-num tabular-nums">0</span>
+              </div>
+            </div>
+
+            <div class="game-over-actions">
+              <button id="play-again-btn" class="btn btn-primary btn-lg" type="button">
+                Play Again
+              </button>
+              <button id="back-to-menu-btn" class="btn btn-secondary" type="button">
+                Back to Menu
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
