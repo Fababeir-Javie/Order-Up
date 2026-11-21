@@ -961,7 +961,15 @@ function updateHudDisplays() {
   dom.ordersDisplay.textContent = String(gameState.ordersServed);
   dom.streakDisplay.textContent = `x${gameState.streak}`;
   dom.levelDisplay.textContent = `Rush Lv ${tier.level}`;
-  dom.healthDisplay.textContent = `${gameState.hearts}/${GAME_CONFIG.MAX_HEARTS}`;
+  dom.healthDisplay.setAttribute(
+    "aria-label",
+    `${gameState.hearts} of ${GAME_CONFIG.MAX_HEARTS} hearts remaining`
+  );
+  dom.healthDisplay.querySelectorAll(".health-heart").forEach((heart, index) => {
+    const isFilled = index < gameState.hearts;
+    heart.classList.toggle("is-filled", isFilled);
+    heart.classList.toggle("is-empty", !isFilled);
+  });
 }
 
 function startGame() {

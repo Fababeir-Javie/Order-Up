@@ -57,6 +57,8 @@
           </div>
 
           <div class="start-content">
+            <p class="start-kicker">The lunch rush is on</p>
+
             <div class="marquee-wrap">
               <svg class="marquee-svg" viewBox="0 0 420 120" role="img" aria-label="Order Up Restaurant Rush Diner Sign">
                 <rect x="8" y="10" width="404" height="100" rx="18" fill="#4A2511" stroke="#D97706" stroke-width="4" />
@@ -211,7 +213,17 @@
 
               <div class="hud-stat hud-health" aria-live="polite">
                 <span class="hud-label">Hearts</span>
-                <span id="health-display" class="hud-value tabular-nums">3/3</span>
+                <span id="health-display" class="hud-value hud-hearts" role="img" aria-label="3 of 3 hearts remaining">
+                  <span class="health-heart is-filled" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.5L12 21.35Z" /></svg>
+                  </span>
+                  <span class="health-heart is-filled" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.5L12 21.35Z" /></svg>
+                  </span>
+                  <span class="health-heart is-filled" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.5L12 21.35Z" /></svg>
+                  </span>
+                </span>
               </div>
             </div>
 
@@ -238,6 +250,7 @@
                 <span id="order-number-label" class="ticket-id">ORDER #1</span>
                 <span id="patience-text" class="ticket-patience tabular-nums">15s</span>
               </div>
+              <p class="ticket-hint">Make these items before patience runs out.</p>
               <div class="patience-track" aria-hidden="true">
                 <div id="patience-bar-fill" class="patience-fill"></div>
               </div>
