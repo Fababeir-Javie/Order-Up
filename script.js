@@ -13,16 +13,16 @@ const GAME_CONFIG = {
     { level: 3, minOrders: 9, minItems: 2, maxItems: 4, patienceSec: 9.5 },
   ],
   COLORS: {
-    wallTop: "#FFF6E6",
-    wallStripe: "#F2DEC0",
-    counterWood: "#7A4222",
-    counterTrim: "#4A2511",
-    counterTop: "#D9A875",
-    plate: "#FFFFFF",
-    plateRim: "#E5D5C0",
-    gold: "#F59E0B",
-    green: "#15803D",
-    red: "#DC2626",
+    wallTop: "#F6E7C2",
+    wallStripe: "#D9C49A",
+    counterWood: "#7A442B",
+    counterTrim: "#3B2A20",
+    counterTop: "#D0A66F",
+    plate: "#F7EDCF",
+    plateRim: "#CBB58A",
+    gold: "#C58A35",
+    green: "#557B62",
+    red: "#A94C35",
   },
 };
 
@@ -87,11 +87,11 @@ const MENU_ITEMS = [
 ];
 
 const CUSTOMER_STYLES = [
-  { shirt: "#2563EB", hair: "#3B2314", skin: "#F3C6A5", hat: "#F59E0B" },
-  { shirt: "#059669", hair: "#1F2937", skin: "#D99B72", hat: null },
-  { shirt: "#DB2777", hair: "#92400E", skin: "#FAD4B8", hat: "#DC2626" },
-  { shirt: "#7C3AED", hair: "#111827", skin: "#9C6240", hat: null },
-  { shirt: "#EA580C", hair: "#F59E0B", skin: "#F6CEB2", hat: "#1E40AF" },
+  { shirt: "#A94C35", hair: "#3B2A20", skin: "#E2C09A", hat: "#C58A35" },
+  { shirt: "#557B62", hair: "#4A3528", skin: "#C99B72", hat: null },
+  { shirt: "#C96B35", hair: "#6F4A32", skin: "#E9CBA8", hat: "#A94C35" },
+  { shirt: "#7A442B", hair: "#35271F", skin: "#A97857", hat: null },
+  { shirt: "#B88A52", hair: "#C58A35", skin: "#DFC09B", hat: "#557B62" },
 ];
 
 
@@ -193,7 +193,6 @@ function initMenuCards() {
     card.setAttribute("aria-pressed", "false");
     card.innerHTML = `
       <span class="food-card-key">${item.keyHint}</span>
-      <span class="food-card-check" aria-hidden="true">✓</span>
       ${menuItemIconSVG(item)}
       <span class="food-card-name">${item.name}</span>
       <span class="food-card-price">₱${MENU_ITEM_PRICES[item.id]}</span>
@@ -390,7 +389,7 @@ function spawnCustomerEntity() {
 }
 
 function spawnServingPlate(isCorrect) {
-  const text = isCorrect ? "✓" : "✕";
+  const text = isCorrect ? "OK" : "NO";
   const color = isCorrect ? "#15803D" : "#DC2626";
 
   canvasWorld.servingPlates.push({
@@ -1096,7 +1095,6 @@ const posDOM = {
   changeSelected:     document.getElementById("pos-change-selected"),
   paymentTypeLabel:   document.getElementById("pos-payment-type-label"),
   idleTimer:          document.getElementById("pos-idle-timer"),
-  toggleCash:         document.getElementById("pos-toggle-cash"),
   cashPanel:          document.getElementById("pos-cash-panel"),
   feedback:           document.getElementById("pos-feedback"),
   completeBtn:        document.getElementById("pos-complete-btn"),
@@ -1138,7 +1136,7 @@ function resetCashierIdleTimer() {
 
 function updateCashierIdleBadge() {
   if (posDOM.idleTimer) {
-    posDOM.idleTimer.textContent = `⏱️ Leaves in ${cashierIdleSeconds}s`;
+    posDOM.idleTimer.textContent = `Leaves in ${cashierIdleSeconds}s`;
     posDOM.idleTimer.classList.toggle("is-urgent", cashierIdleSeconds <= 5);
   }
 }
@@ -1235,10 +1233,8 @@ function setPosPaymentMode() {
   resetCashierIdleTimer();
 
   posDOM.cashPanel.hidden = false;
-  posDOM.toggleCash.classList.add("is-active-payment");
-  posDOM.toggleCash.setAttribute("aria-pressed", "true");
   posDOM.paymentTypeLabel.textContent = "Cash Payment";
-  posDOM.completeBtn.textContent = "✓ Complete Transaction";
+  posDOM.completeBtn.textContent = "Complete Transaction";
 }
 
 function addDenomToChange(denomValue) {
@@ -1255,7 +1251,7 @@ function refreshChangeSumDisplay() {
 
   if (round2(given) === round2(correctChange)) {
     posDOM.changeSelected.classList.add("is-exact");
-    setPosRegisterFeedback("✓ Change matches! Hit 'Complete Transaction' to finish.", "success");
+    setPosRegisterFeedback("Change matches! Hit 'Complete Transaction' to finish.", "success");
   } else if (given > correctChange) {
     posDOM.changeSelected.classList.remove("is-exact");
     setPosRegisterFeedback(
@@ -1352,7 +1348,7 @@ function finishTransaction(isCorrect) {
 
   registerDrawerTotal = round2(registerDrawerTotal + saleAmount);
 
-  const confirmMsg = `Transaction complete! 💵 Change given: ${formatPeso(posRegisterState.changeGiven)} + ₱${tip} tip bonus`;
+  const confirmMsg = `Transaction complete! Change given: ${formatPeso(posRegisterState.changeGiven)} + ₱${tip} tip bonus`;
 
   setPosRegisterFeedback(confirmMsg, "success");
   playSuccessChime();
@@ -1388,15 +1384,6 @@ function closeCashierModal() {
 }
 
 function bindCashierEvents() {
-  posDOM.toggleCash.addEventListener("click", () => {
-    setPosPaymentMode();
-    clearChangeSelection();
-    setPosRegisterFeedback(
-      `Customer hands you ${formatPeso(posRegisterState.cashReceived)}. Count out the correct change.`,
-      "neutral"
-    );
-  });
-
   document.querySelectorAll(".pos-bill-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const denom = parseFloat(btn.dataset.denom);
