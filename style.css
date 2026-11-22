@@ -578,8 +578,9 @@ body {
   background: rgba(255, 241, 213, 0.12);
   border-radius: 4px 12px 4px 12px;
   padding: 5px 11px;
+  min-height: 38px;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 7px;
   border: 2px solid rgba(255, 211, 78, 0.72);
   box-shadow: 3px 3px 0 rgba(33, 21, 45, 0.52);
@@ -609,6 +610,13 @@ body {
   align-items: center;
   gap: 3px;
   line-height: 1;
+}
+
+.hud-health {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .health-heart {
@@ -1869,6 +1877,8 @@ body {
 
   .hud-stat {
     min-width: 0;
+    width: 100%;
+    min-height: 42px;
     justify-content: space-between;
     gap: 4px;
     padding: 5px 6px;
@@ -1883,10 +1893,11 @@ body {
   }
 
   .hud-health {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 2px;
+    gap: 3px;
+    padding: 5px 6px;
   }
 
   .hud-hearts {
@@ -2338,6 +2349,7 @@ body {
     grid-row: 1;
     justify-content: center;
     gap: 2px;
+    padding: 5px 4px;
   }
 
   .hud-hearts {
@@ -2345,9 +2357,9 @@ body {
   }
 
   .health-heart {
-    flex-basis: 13px;
-    width: 13px;
-    height: 13px;
+    flex-basis: 12px;
+    width: 12px;
+    height: 12px;
   }
 }
 
