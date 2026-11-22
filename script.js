@@ -42,16 +42,7 @@ const MENU_ITEMS = [
     price: 75,
     keyHint: "1",
     accent: "#D97706",
-    svg: `<svg viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M12 28 C12 14, 52 14, 52 28 Z" fill="#E69B45"/>
-      <circle cx="24" cy="21" r="1.8" fill="#FFF3D6"/>
-      <circle cx="34" cy="19" r="1.8" fill="#FFF3D6"/>
-      <circle cx="42" cy="22" r="1.8" fill="#FFF3D6"/>
-      <path d="M10 31 Q16 28 22 31 T34 31 T46 31 T54 31" stroke="#3F9B4C" stroke-width="4" fill="none" stroke-linecap="round"/>
-      <rect x="11" y="34" width="42" height="8" rx="4" fill="#6F371E"/>
-      <polygon points="15,34 49,34 32,41" fill="#FACC15"/>
-      <rect x="12" y="44" width="40" height="8" rx="4" fill="#D9822B"/>
-    </svg>`,
+    icon: "burger",
   },
   {
     id: "fries",
@@ -59,14 +50,7 @@ const MENU_ITEMS = [
     price: 45,
     keyHint: "2",
     accent: "#F59E0B",
-    svg: `<svg viewBox="0 0 64 64" aria-hidden="true">
-      <rect x="19" y="14" width="5" height="22" rx="2" fill="#FBBF24"/>
-      <rect x="26" y="10" width="5" height="26" rx="2" fill="#F59E0B"/>
-      <rect x="33" y="12" width="5" height="24" rx="2" fill="#FBBF24"/>
-      <rect x="40" y="15" width="5" height="21" rx="2" fill="#F59E0B"/>
-      <path d="M15 28 L49 28 L45 54 L19 54 Z" fill="#DC2626"/>
-      <circle cx="32" cy="41" r="5" fill="#FBBF24"/>
-    </svg>`,
+    icon: "fries",
   },
   {
     id: "pizza",
@@ -74,13 +58,7 @@ const MENU_ITEMS = [
     price: 89,
     keyHint: "3",
     accent: "#EA580C",
-    svg: `<svg viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M14 20 Q32 10 50 20 L32 54 Z" fill="#FACC15"/>
-      <path d="M12 20 Q32 8 52 20" stroke="#D97706" stroke-width="6" fill="none" stroke-linecap="round"/>
-      <circle cx="29" cy="27" r="3.5" fill="#DC2626"/>
-      <circle cx="38" cy="31" r="3.5" fill="#DC2626"/>
-      <circle cx="31" cy="39" r="3" fill="#DC2626"/>
-    </svg>`,
+    icon: "pizza",
   },
   {
     id: "soda",
@@ -88,12 +66,7 @@ const MENU_ITEMS = [
     price: 35,
     keyHint: "4",
     accent: "#DC2626",
-    svg: `<svg viewBox="0 0 64 64" aria-hidden="true">
-      <line x1="34" y1="22" x2="42" y2="8" stroke="#4A2511" stroke-width="3.5" stroke-linecap="round"/>
-      <rect x="18" y="20" width="28" height="5" rx="2" fill="#E5E7EB"/>
-      <path d="M20 25 L44 25 L41 54 L23 54 Z" fill="#DC2626"/>
-      <circle cx="32" cy="39" r="6" fill="#FFF8EC"/>
-    </svg>`,
+    icon: "soda",
   },
   {
     id: "hotdog",
@@ -101,11 +74,7 @@ const MENU_ITEMS = [
     price: 55,
     keyHint: "5",
     accent: "#B45309",
-    svg: `<svg viewBox="0 0 64 64" aria-hidden="true">
-      <rect x="10" y="24" width="44" height="18" rx="9" fill="#E69B45"/>
-      <rect x="7" y="28" width="50" height="10" rx="5" fill="#B94A2C"/>
-      <path d="M14 33 Q20 28 26 33 T38 33 T50 33" stroke="#FACC15" stroke-width="3" fill="none" stroke-linecap="round"/>
-    </svg>`,
+    icon: "hotdog",
   },
   {
     id: "icecream",
@@ -113,13 +82,7 @@ const MENU_ITEMS = [
     price: 50,
     keyHint: "6",
     accent: "#EC4899",
-    svg: `<svg viewBox="0 0 64 64" aria-hidden="true">
-      <polygon points="22,33 42,33 32,56" fill="#D9822B"/>
-      <circle cx="27" cy="28" r="8" fill="#F9A8D4"/>
-      <circle cx="37" cy="28" r="8" fill="#FDE68A"/>
-      <circle cx="32" cy="21" r="9" fill="#F472B6"/>
-      <circle cx="32" cy="11" r="3" fill="#DC2626"/>
-    </svg>`,
+    icon: "icecream",
   },
 ];
 
@@ -216,6 +179,10 @@ if (dom.canvas) {
 }
 
 
+function menuItemIconSVG(item) {
+  return `<svg viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-${item.icon}"></use></svg>`;
+}
+
 function initMenuCards() {
   dom.menuGrid.innerHTML = "";
   MENU_ITEMS.forEach((item) => {
@@ -227,7 +194,7 @@ function initMenuCards() {
     card.innerHTML = `
       <span class="food-card-key">${item.keyHint}</span>
       <span class="food-card-check" aria-hidden="true">✓</span>
-      ${item.svg}
+      ${menuItemIconSVG(item)}
       <span class="food-card-name">${item.name}</span>
       <span class="food-card-price">₱${MENU_ITEM_PRICES[item.id]}</span>
     `;
@@ -432,6 +399,7 @@ function spawnServingPlate(isCorrect) {
     y: GAME_CONFIG.COUNTER_Y - 6,
     targetX: 340,
     vy: -55,
+    gravity: 120,
     text,
     color,
     life: 0.95,
@@ -684,6 +652,11 @@ function renderCanvasScene() {
     ctx.ellipse(plate.x, plate.y, 26, 8, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
+    ctx.font = "800 18px 'Bricolage Grotesque', sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = plate.color;
+    ctx.fillText(plate.text, plate.x, plate.y - 2);
     ctx.restore();
   });
 
@@ -810,7 +783,7 @@ function renderOrderTicket() {
 
     const chip = document.createElement("div");
     chip.className = "order-chip";
-    chip.innerHTML = `${item.svg}<span>${item.name}</span>`;
+    chip.innerHTML = `${menuItemIconSVG(item)}<span>${item.name}</span>`;
     dom.orderItemsList.appendChild(chip);
   });
 }
@@ -820,6 +793,19 @@ function isOrderExactMatch(selected, requested) {
     return false;
   }
   return requested.every((itemId) => selected.includes(itemId));
+}
+
+function penalizeHeart() {
+  gameState.hearts = Math.max(0, gameState.hearts - 1);
+  updateHudDisplays();
+}
+
+function closeShiftOrContinue(gameOverMessage) {
+  if (gameState.hearts <= 0) {
+    endGame(gameOverMessage);
+    return;
+  }
+  generateOrder();
 }
 
 function serveOrder() {
@@ -866,7 +852,7 @@ function serveOrder() {
     openCashierModal(gameState.currentOrder.items, pointsEarned);
     return;
   } else {
-    gameState.hearts = Math.max(0, gameState.hearts - 1);
+    penalizeHeart();
 
     if (canvasWorld.customer) {
       canvasWorld.customer.mood = "upset";
@@ -882,19 +868,12 @@ function serveOrder() {
 
   gameState.selectedItems = [];
   syncMenuCardSelectionUI();
-  updateHudDisplays();
-
-  if (gameState.hearts <= 0) {
-    endGame("Kitchen closed! You ran out of customer hearts.");
-    return;
-  }
-
-  generateOrder();
+  closeShiftOrContinue("Kitchen closed! You ran out of customer hearts.");
 }
 
 function handleOrderTimeout() {
   gameState.streak = 0;
-  gameState.hearts = Math.max(0, gameState.hearts - 1);
+  penalizeHeart();
 
   if (canvasWorld.customer) {
     canvasWorld.customer.mood = "upset";
@@ -908,14 +887,7 @@ function handleOrderTimeout() {
 
   gameState.selectedItems = [];
   syncMenuCardSelectionUI();
-  updateHudDisplays();
-
-  if (gameState.hearts <= 0) {
-    endGame("Kitchen closed! Too many customers walked out.");
-    return;
-  }
-
-  generateOrder();
+  closeShiftOrContinue("Kitchen closed! Too many customers walked out.");
 }
 
 function setFeedback(message, tone) {
@@ -1110,7 +1082,6 @@ const posRegisterState = {
   totalDue: 0,
   cashReceived: 0,
   changeGiven: 0,
-  paymentMode: "cash",
   pendingOrderItems: [],
   pendingPoints: 0,
 };
@@ -1175,19 +1146,13 @@ function updateCashierIdleBadge() {
 function handleCashierInactivityTimeout() {
   closeCashierModal();
   gameState.streak = 0;
-  gameState.hearts = Math.max(0, gameState.hearts - 1);
-  updateHudDisplays();
+  penalizeHeart();
   playErrorBuzz();
   triggerCameraShake(6, 0.24);
   spawnFloatingText(260, GAME_CONFIG.COUNTER_Y - 70, "Too Slow! -1 ♥", "#DC2626");
   setFeedback("Customer got tired of waiting for change and walked out! -1 Heart", "error");
 
-  if (gameState.hearts <= 0) {
-    endGame("Kitchen closed! Too many customers walked out.");
-    return;
-  }
-
-  generateOrder();
+  closeShiftOrContinue("Kitchen closed! Too many customers walked out.");
 }
 
 function formatPeso(amount) {
@@ -1209,22 +1174,16 @@ function pickCashTendered(total) {
   return Math.ceil(total / 1000) * 1000;
 }
 
-function pickPaymentMode() {
-  return "cash";
-}
-
 function openCashierModal(itemIds, earnedPoints) {
   posRegisterState.pendingOrderItems = [...itemIds];
   posRegisterState.pendingPoints     = earnedPoints;
 
   const total  = computeOrderTotal(itemIds);
-  const mode   = pickPaymentMode();
   const tender = pickCashTendered(total);
 
   posRegisterState.totalDue     = total;
   posRegisterState.cashReceived = tender;
   posRegisterState.changeGiven  = 0;
-  posRegisterState.paymentMode  = mode;
 
   posDOM.receiptItems.innerHTML = "";
 
@@ -1260,7 +1219,7 @@ function openCashierModal(itemIds, earnedPoints) {
     posDOM.correctChange.textContent = formatPeso(correctChange);
   }
 
-  setPosPaymentMode("cash");
+  setPosPaymentMode();
 
   setPosRegisterFeedback(
     `Customer hands you ${tenderStr}. Count out the correct change using the buttons below.`,
@@ -1272,9 +1231,8 @@ function openCashierModal(itemIds, earnedPoints) {
   posDOM.completeBtn.focus();
 }
 
-function setPosPaymentMode(mode) {
+function setPosPaymentMode() {
   resetCashierIdleTimer();
-  posRegisterState.paymentMode = "cash";
 
   posDOM.cashPanel.hidden = false;
   posDOM.toggleCash.classList.add("is-active-payment");
@@ -1363,8 +1321,7 @@ function attemptCompleteTransaction() {
       "error"
     );
     playErrorBuzz();
-    gameState.hearts = Math.max(0, gameState.hearts - 1);
-    updateHudDisplays();
+    penalizeHeart();
     spawnFloatingText(260, GAME_CONFIG.COUNTER_Y - 70, "Short Change! -1 ♥", GAME_CONFIG.COLORS.red);
     if (gameState.hearts <= 0) {
       closeCashierModal();
@@ -1432,7 +1389,7 @@ function closeCashierModal() {
 
 function bindCashierEvents() {
   posDOM.toggleCash.addEventListener("click", () => {
-    setPosPaymentMode("cash");
+    setPosPaymentMode();
     clearChangeSelection();
     setPosRegisterFeedback(
       `Customer hands you ${formatPeso(posRegisterState.cashReceived)}. Count out the correct change.`,
@@ -1442,7 +1399,6 @@ function bindCashierEvents() {
 
   document.querySelectorAll(".pos-bill-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      if (posRegisterState.paymentMode !== "cash") return;
       const denom = parseFloat(btn.dataset.denom);
       addDenomToChange(denom);
       playTone(520, 0.06, "sine", 0.08);
@@ -1451,7 +1407,6 @@ function bindCashierEvents() {
 
   document.querySelectorAll(".pos-coin-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      if (posRegisterState.paymentMode !== "cash") return;
       const denom = parseFloat(btn.dataset.denom);
       addDenomToChange(denom);
       playTone(620, 0.05, "triangle", 0.07);
